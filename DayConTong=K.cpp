@@ -4,19 +4,23 @@ using namespace std;
 #define ll long long
 const int MOD = 1e9+7;
 
-void f(size_t ind,int k,vector<int> &a,vector<int> &ans,vector<vector<int>> &anss) {
+void f(size_t ind,int k,vector<int> &a,vector<int> &ans,bool &check) {
 	if(ind == a.size()) {
 		if(k == 0) {
-			anss.push_back(ans);
+			cout<<'[';
+			for(size_t x=0;x<ans.size();x++) {
+				cout<<ans[x]; if(x<ans.size() -1) cout<<' ';
+			}
+			cout<<"] "; check = true; 
 		}
 		return ;
 	}
 	if(a[ind] <= k) {
 		ans.push_back(a[ind]);
-		f(ind+1,k-a[ind],a,ans,anss);
+		f(ind+1,k-a[ind],a,ans,check);
 		ans.pop_back();
 	}
-	f(ind+1,k,a,ans,anss);
+	f(ind+1,k,a,ans,check);
 }
 void test()
 {
@@ -27,18 +31,9 @@ void test()
 		for(int &i:a) cin>>i;
 		sort(begin(a),end(a));
 		vector<int> ans;
-		vector<vector<int>> anss;
-		f(0,k,a,ans,anss);
-		if(!anss.size()) cout<<-1;
-		else {
-			for(auto it : anss) {
-				cout<<'[';
-				for(size_t x=0;x<it.size();x++) {
-					cout<<it[x];if(x<it.size()-1) cout<<' ';
-				}
-				cout<<"] ";
-			}
-		}
+		bool check = false;
+		f(0,k,a,ans,check);
+		if(!check) cout<<-1;
 		cout<<'\n';
 	}
 }
